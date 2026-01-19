@@ -8,7 +8,7 @@ metadata:
   version: "1.0"
 ---
 
-# Valyu Search Best Practices
+# Valyu Best Practices
 
 This skill provides instructions for using the Valyu API to perform search, content extraction, AI-powered answers, and deep research tasks.
 
@@ -49,7 +49,7 @@ What do you need?
 - News monitoring and current events
 - Healthcare data (clinical trials, drug labels)
 - Prediction markets (Polymarket, Kalshi)
-- Transportation (UK National Rail)
+- Transportation (UK National Rail, Global Shipping)
 
 ### Basic Usage
 
