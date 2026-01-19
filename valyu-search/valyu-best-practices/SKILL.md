@@ -77,7 +77,7 @@ const response = await valyu.search({
 | `query` | Search query (under 400 chars) | `"CRISPR gene editing 2024"` |
 | `search_type` | Source scope | `"all"`, `"web"`, `"proprietary"`, `"news"` |
 | `max_num_results` | Number of results (1-20) | `10` |
-| `included_sources` | Limit to specific sources | `["arxiv", "pubmed"]` |
+| `included_sources` | Limit to specific sources | `["valyu/valyu-arxiv", "valyu/valyu-pubmed", "valyu/valyu-medrxiv", "valyu/valyu-biorxiv"]` |
 | `start_date` / `end_date` | Date filtering | `"2024-01-01"` |
 | `relevance_threshold` | Minimum relevance (0-1) | `0.7` |
 
@@ -88,7 +88,7 @@ const response = await valyu.search({
 await valyu.search({
   query: "CRISPR therapeutic applications clinical trials",
   search_type: "proprietary",
-  included_sources: ["arxiv", "pubmed", "biorxiv"],
+  included_sources: ["valyu/valyu-arxiv", "valyu/valyu-pubmed", "valyu/valyu-biorxiv"],
   start_date: "2024-01-01"
 });
 ```
@@ -98,7 +98,7 @@ await valyu.search({
 await valyu.search({
   query: "Apple revenue Q4 2024 earnings",
   search_type: "all",
-  included_sources: ["sec-filings", "earnings-transcripts"]
+  included_sources: ["valyu/valyu-sec-filings", "valyu/valyu-earnings-US"]
 });
 ```
 
@@ -108,7 +108,7 @@ await valyu.search({
   query: "AI regulation EU",
   search_type: "news",
   start_date: "2024-06-01",
-  country_code: "US"
+  country_code: "EU"
 });
 ```
 
@@ -214,7 +214,7 @@ const response = await valyu.answer({
 ```typescript
 const response = await valyu.answer({
   query: "Current Bitcoin price and 24h change",
-  fast_mode: true
+  fastMode: true
 });
 ```
 
@@ -223,7 +223,7 @@ const response = await valyu.answer({
 ```typescript
 const response = await valyu.answer({
   query: "Compare React and Vue for enterprise applications",
-  system_instructions: "Provide a balanced comparison with pros and cons. Format as a comparison table."
+  systemInstructions: "Provide a balanced comparison with pros and cons. Format as a comparison table."
 });
 ```
 
@@ -295,7 +295,7 @@ For detailed patterns, see:
 | Mode | Duration | Best For |
 |------|----------|----------|
 | `fast` | ~5 minutes | Quick lookups, simple questions |
-| `lite` | ~10-20 minutes | Balanced research (most common) |
+| `standard` | ~10-20 minutes | Balanced research (most common) |
 | `heavy` | ~90 minutes | Comprehensive analysis, complex topics |
 
 ### Create Research Task
@@ -303,7 +303,7 @@ For detailed patterns, see:
 ```typescript
 const task = await valyu.deepResearch.create({
   query: "AI chip market competitive landscape 2024",
-  model: "lite"
+  model: "standard"
 });
 // Returns: { deepresearch_id: "abc123", status: "queued" }
 ```
@@ -326,9 +326,9 @@ if (status.status === "completed") {
 | Parameter | Purpose | Example |
 |-----------|---------|---------|
 | `query` | Research question | `"AI market trends 2024"` |
-| `model` | Research depth | `"fast"`, `"lite"`, `"heavy"` |
+| `model` | Research depth | `"fast"`, `"standard"`, `"heavy"` |
 | `output_format` | Report format | `"markdown"`, `"pdf"` |
-| `included_sources` | Source filtering | `["arxiv", "techcrunch"]` |
+| `included_sources` | Source filtering | `["valyu/valyu-arxiv", "techcrunch.com"]` |
 | `start_date` / `end_date` | Date range | `"2024-01-01"` |
 
 ### DeepResearch Recipes
@@ -386,16 +386,37 @@ Query 3: "Tesla FSD autonomous driving progress"
 ### Source Filtering
 
 Use `included_sources` for domain authority:
+​
+Financial Research Collection. Some sources to include:
+- `valyu/valyu-sec-filings` - SEC regulatory filings
+- `valyu/valyu-stocks` - Stock market data
+- `valyu/valyu-earnings-US` - Earnings reports
+- `reuters.com` - Financial news
+- `bloomberg.com` - Market analysis
+​
+Medical Research Collection. Some sources to include:
+- `valyu/valyu-pubmed` - Medical literature
+- `valyu/valyu-clinical-trials` - Clinical trial data
+- `valyu/valyu-drug-labels` - FDA drug information
+- `nejm.org` - New England Journal of Medicine
+- `thelancet.com` - The Lancet
+​
+Tech Documentation Collection. Some sources to include:
+- `docs.aws.amazon.com` - AWS documentation
+- `cloud.google.com/docs` - Google Cloud docs
+- `learn.microsoft.com` - Microsoft docs
+- `kubernetes.io/docs` - Kubernetes docs
+- `developer.mozilla.org` - MDN Web Docs
 
 ```javascript
 // Academic
-included_sources: ["arxiv", "pubmed", "nature"]
+included_sources: ["valyu/valyu-arxiv", "valyu/valyu-pubmed", "nature"]
 
 // Financial
-included_sources: ["sec-filings", "bloomberg", "reuters"]
+included_sources: ["valyu/valyu-sec-filings", "bloomberg.com", "reuters.com"]
 
 // Tech news
-included_sources: ["techcrunch", "theverge", "arstechnica"]
+included_sources: ["techcrunch.com", "theverge.com", "arstechnica.com"]
 ```
 
 For complete prompting guide, see [references/prompting.md](references/prompting.md).
